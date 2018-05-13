@@ -9,6 +9,7 @@
   "author": "Alexey Semigradsky <alexey@semigradsky.com>",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^2.0.0"
+    "electron": "^2.0.0",
+    "lodash": "^4.17.10"
   }
 }
