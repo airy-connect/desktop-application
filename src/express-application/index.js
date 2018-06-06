@@ -8,7 +8,14 @@ const _ = require("lodash");
 // Middlewares
 const certificateMiddleware = require("./middlewares/certificate-middleware");
 const deviceMiddleware = require("./middlewares/device-middleware");
+const authorizationMiddleware = require("./middlewares/authorization-middleware");
+
+// Models
 const Device = require("../models/device");
+
+// Plugins
+const PresentationPlugin = require("../plugins/presentation-plugin");
+const MultimediaControlPlugin = require("../plugins/multimedia-control-plugin");
 
 class ExpressApplication extends EventEmitter {
   constructor(serverCertificate, caCertificate) {
@@ -18,6 +25,79 @@ class ExpressApplication extends EventEmitter {
     this._expressApplication.use(deviceMiddleware);
     this._expressApplication.get("/getAuthorizationStatus", this._getAuthorizationStatus.bind(this));
     this._expressApplication.get("/sendAuthorizationRequest", this._sendAuthorizationRequest.bind(this));
+
+    this._expressApplication.get(
+      "/presentationPlugin/nextSlide",
+      authorizationMiddleware,
+      (request, response) => {
+        PresentationPlugin.nextSlide();
+        response.status(200).send();
+      }
+    );
+
+    this._expressApplication.get(
+      "/presentationPlugin/prevSlide",
+      authorizationMiddleware,
+      (request, response) => {
+        PresentationPlugin.prevSlide();
+        response.status(200).send();
+      }
+    );
+
+    this._expressApplication.get(
+      "/multimediaControlPlugin/prev",
+      authorizationMiddleware,
+      (request, response) => {
+        MultimediaControlPlugin.prev();
+        response.status(200).send();
+      }
+    );
+
+    this._expressApplication.get(
+      "/multimediaControlPlugin/playOrPause",
+      authorizationMiddleware,
+      (request, response) => {
+        MultimediaControlPlugin.playOrPause();
+        response.status(200).send();
+      }
+    );
+
+    this._expressApplication.get(
+      "/multimediaControlPlugin/next",
+      authorizationMiddleware,
+      (request, response) => {
+        MultimediaControlPlugin.next();
+        response.status(200).send();
+      }
+    );
+
+    this._expressApplication.get(
+      "/multimediaControlPlugin/up",
+      authorizationMiddleware,
+      (request, response) => {
+        MultimediaControlPlugin.up();
+        response.status(200).send();
+      }
+    );
+
+    this._expressApplication.get(
+      "/multimediaControlPlugin/down",
+      authorizationMiddleware,
+      (request, response) => {
+        MultimediaControlPlugin.down();
+        response.status(200).send();
+      }
+    );
+
+    this._expressApplication.get(
+      "/multimediaControlPlugin/muteOrUnmute",
+      authorizationMiddleware,
+      (request, response) => {
+        MultimediaControlPlugin.muteOrUnmute();
+        response.status(200).send();
+      }
+    );
+
     const httpsServerOptions = {
       key: serverCertificate.getPrivateKey(),
       cert: serverCertificate.getPublicKey(),
