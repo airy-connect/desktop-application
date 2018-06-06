@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese');
+
+body {
+    font-family: Roboto, sans-serif;
+}
+
+.mdc-button.mdc-button--red {
+    color: #F44336;
+}
+
+.mdc-button.mdc-button--green {
+    color: #4CAF50;
+}
+
+.mdc-ripple-surface--red:before,
+.mdc-ripple-surface--red:after {
+    background-color: #F44336;
+}
+
+.mdc-ripple-surface--green:before,
+.mdc-ripple-surface--green:after {
+    background-color: #4CAF50;
+}
+
+.h-100 {
+    height: 100%;
+}

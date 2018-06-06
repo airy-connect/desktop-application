@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Запрос на подключение</title>
+    <link rel="stylesheet" href="../../../../node_modules/normalize.css/normalize.css">
+    <link rel="stylesheet" href="../../../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../../../../node_modules/material-components-web/dist/material-components-web.min.css">
+    <link rel="stylesheet" href="../../common/css/style.css">
+</head>
+<body class="h-100 mdc-typography">
+<div class="h-100 d-flex flex-column justify-content-between">
+    <div>
+        <header class="mdc-dialog__header">
+            <h2 id="my-mdc-dialog-label" class="mdc-dialog__header__title">
+                Устройство с IP адресом 192.168.1.56 пытается подключиться
+            </h2>
+        </header>
+        <section class="mdc-dialog__body">
+            <h3 class="mdc-typography mdc-typography--subtitle1">Отпечаток сертификата <i>удаленного</i> устройства:
+            </h3>
+            <pre>688787D8FF144C502C7F5CFFAAFE2CC588D86079F9DE88304C26B0CB99CE91C6</pre>
+            <h3 class="mdc-typography mdc-typography--subtitle1">Отпечаток сертификата <i>вашего</i> устройства:</h3>
+            <pre>688787D8FF144C502C7F5CFFAAFE2CC588D86079F9DE88304C26B0CB99CE91C6</pre>
+        </section>
+    </div>
+    <div>
+        <footer class="mdc-dialog__footer">
+            <button type="button"
+                    class="mdc-button mdc-button--red mdc-ripple-surface mdc-ripple-surface--red">
+                Не разрешать
+            </button>
+            <button type="button"
+                    class="mdc-button mdc-button--green mdc-ripple-surface mdc-ripple-surface--green">
+                Разрешить
+            </button>
+        </footer>
+    </div>
+</div>
+<script src="../../../../node_modules/material-components-web/dist/material-components-web.min.js"></script>
+<script>
+  window.mdc.autoInit();
+  for (const $button of document.querySelectorAll(".mdc-button")) {
+    new window.mdc.ripple.MDCRipple($button);
+  }
+</script>
+<script>require("./script");</script>
+</body>
+</html>
