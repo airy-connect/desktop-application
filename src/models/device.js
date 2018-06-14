@@ -4,15 +4,18 @@ const fs = require("fs");
 const _ = require("lodash");
 const electron = require("electron");
 const low = require("lowdb");
+const FileAsync = require("lowdb/adapters/FileAsync");
 const Memory = require("lowdb/adapters/Memory");
+
+FileAsync.prototype.read = Memory.prototype.read;
 
 const dbFilePath = path.resolve(electron.app.getPath("userData"), "devices.json");
 if (!fs.existsSync(dbFilePath)) {
-  fs.writeFileSync(dbFilePath, '{}');
+  fs.writeFileSync(dbFilePath, "{}");
 }
 const state = JSON.parse(fs.readFileSync(dbFilePath));
 
-const adapter = new Memory();
+const adapter = new FileAsync(dbFilePath);
 const db = low(adapter);
 
 db.setState(state);
@@ -20,11 +23,6 @@ db.setState(state);
 const devices = db
   .defaults({"devices": []})
   .get("devices");
-
-setInterval(() => {
-  const state = JSON.stringify(db.getState());
-  fs.writeFile(dbFilePath, state, () => {});
-}, 250);
 
 class Device {
   /**

@@ -8,7 +8,6 @@ function authorizationMiddleware(request, response, next) {
   if (!_.isEqual(device.authorizationStatus, Device.AUTHORIZATION_STATUS.AUTHORIZED)) {
     return response.status(401).end();
   }
-
   next();
 }
 

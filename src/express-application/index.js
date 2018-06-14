@@ -16,6 +16,7 @@ const Device = require("../models/device");
 // Plugins
 const PresentationPlugin = require("../plugins/presentation-plugin");
 const MultimediaControlPlugin = require("../plugins/multimedia-control-plugin");
+const RemoteInputPlugin = require("../plugins/remote-input-plugin");
 
 class ExpressApplication extends EventEmitter {
   constructor(serverCertificate, caCertificate) {
@@ -25,6 +26,26 @@ class ExpressApplication extends EventEmitter {
     this._expressApplication.use(deviceMiddleware);
     this._expressApplication.get("/getAuthorizationStatus", this._getAuthorizationStatus.bind(this));
     this._expressApplication.get("/sendAuthorizationRequest", this._sendAuthorizationRequest.bind(this));
+
+    this._expressApplication.get(
+      "/remoteInputPlugin/cursorMove",
+      authorizationMiddleware,
+      (request, response) => {
+        const {deltaX, deltaY} = request.query;
+        RemoteInputPlugin.moveCursor(+deltaX, +deltaY);
+        response.status(200).send();
+      }
+    );
+
+    this._expressApplication.get(
+      "/remoteInputPlugin/click",
+      authorizationMiddleware,
+      (request, response) => {
+        const {button} = request.query;
+        RemoteInputPlugin.click(button);
+        response.status(200).send();
+      }
+    );
 
     this._expressApplication.get(
       "/presentationPlugin/nextSlide",

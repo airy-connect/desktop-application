@@ -11,6 +11,8 @@ const Certificate = require("./models/certificate");
 const caCertificate = require("./ca-certificate");
 const Device = require("./models/device");
 
+require("electron").powerSaveBlocker.start("prevent-app-suspension");
+
 electronApplication.on("ready", () => {
   main().catch(console.error);
 });
@@ -22,12 +24,17 @@ electronApplication.on("window-all-closed", () => {
 async function main() {
   const userFolderPath = electronApplication.getPath("userData");
   const serverCertificate = await getServerCertificate(userFolderPath);
+  const serverCertificateFingerprint = serverCertificate.getFingerprint();
   const expressApplication = new ExpressApplication(serverCertificate, caCertificate);
   expressApplication.on("authorizationRequest", ({deviceIpAddress, deviceCertificateFingerprint}) => {
-    createAuthorizationRequestWindow(deviceIpAddress, deviceCertificateFingerprint);
+    createAuthorizationRequestWindow(deviceIpAddress, deviceCertificateFingerprint, serverCertificateFingerprint);
   });
 }
 
+/**
+ * @param {string} folderPath
+ * @returns {Promise<Certificate>}
+ */
 async function getServerCertificate(folderPath) {
   const certificateKeyFilePath = path.resolve(folderPath, "certificate", "key.pem");
   const certificateFilePath = path.resolve(folderPath, "certificate", "certificate.pem");
@@ -43,7 +50,7 @@ async function getServerCertificate(folderPath) {
   );
 }
 
-function createAuthorizationRequestWindow(deviceIpAddress, deviceCertificateFingerprint) {
+function createAuthorizationRequestWindow(clientIpAddress, clientCertificateFingerprint, serverCertificateFingerprint) {
   const window = new BrowserWindow({
     width: 768,
     height: 384,
@@ -61,8 +68,9 @@ function createAuthorizationRequestWindow(deviceIpAddress, deviceCertificateFing
   window["setState"] = (newState) => state = newState;
 
   window["props"] = {
-    deviceIpAddress,
-    deviceCertificateFingerprint,
+    clientIpAddress,
+    clientCertificateFingerprint,
+    serverCertificateFingerprint,
   };
 
   window.loadURL(url.format({
@@ -72,7 +80,7 @@ function createAuthorizationRequestWindow(deviceIpAddress, deviceCertificateFing
   }));
 
   window.on("closed", () => {
-    const device = Device.findByCertificateFingerprint(deviceCertificateFingerprint);
+    const device = Device.findByCertificateFingerprint(clientCertificateFingerprint);
     if (state["isConnectionAllowed"]) {
       device.authorizationStatus = Device.AUTHORIZATION_STATUS.AUTHORIZED;
     } else {
