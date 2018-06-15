@@ -17,6 +17,7 @@ const Device = require("../models/device");
 const PresentationPlugin = require("../plugins/presentation-plugin");
 const MultimediaControlPlugin = require("../plugins/multimedia-control-plugin");
 const RemoteInputPlugin = require("../plugins/remote-input-plugin");
+const ScreenshotPlugin = require("../plugins/screenshot-plugin");
 
 class ExpressApplication extends EventEmitter {
   constructor(serverCertificate, caCertificate) {
@@ -116,6 +117,15 @@ class ExpressApplication extends EventEmitter {
       (request, response) => {
         MultimediaControlPlugin.muteOrUnmute();
         response.status(200).send();
+      }
+    );
+
+    this._expressApplication.get(
+      "/screenshotPlugin/get",
+      authorizationMiddleware,
+      async (request, response) => {
+        const screenshot = await ScreenshotPlugin.get();
+        response.status(200).send(screenshot.toString('base64'));
       }
     );
 

@@ -24,6 +24,7 @@
     "npm": "^6.1.0",
     "request": "^2.86.0",
     "request-promise-native": "^1.0.5",
-    "robotjs": "^0.5.1"
+    "robotjs": "^0.5.1",
+    "screenshot-desktop": "^1.4.2"
   }
 }
