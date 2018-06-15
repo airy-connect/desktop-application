@@ -49,6 +49,16 @@ class ExpressApplication extends EventEmitter {
     );
 
     this._expressApplication.get(
+      "/remoteInputPlugin/typeString",
+      authorizationMiddleware,
+      (request, response) => {
+        const {string} = request.query;
+        RemoteInputPlugin.typeString(string);
+        response.status(200).send();
+      }
+    );
+
+    this._expressApplication.get(
       "/presentationPlugin/nextSlide",
       authorizationMiddleware,
       (request, response) => {

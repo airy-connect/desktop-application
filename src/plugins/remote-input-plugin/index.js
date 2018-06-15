@@ -9,6 +9,10 @@ class RemoteInputPlugin {
   static click(button) {
     robot.mouseClick(button);
   }
+
+  static typeString(string) {
+    robot.typeString(string);
+  }
 }
 
 module.exports = RemoteInputPlugin;
