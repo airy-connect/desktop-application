@@ -5,11 +5,14 @@ const {
 const fsExtra = require("fs-extra");
 const path = require("path");
 const url = require("url");
+const _ = require("lodash");
 
 const ExpressApplication = require("./express-application");
 const Certificate = require("./models/certificate");
 const caCertificate = require("./ca-certificate");
 const Device = require("./models/device");
+
+let mainWindow;
 
 require("electron").powerSaveBlocker.start("prevent-app-suspension");
 
@@ -17,11 +20,16 @@ electronApplication.on("ready", () => {
   main().catch(console.error);
 });
 
-electronApplication.on("window-all-closed", () => {
-  console.log("All windows closed.");
+electronApplication.on("activate", () => {
+  if (_.isNull(mainWindow)) {
+    createMainWindow();
+  }
 });
 
+electronApplication.on("window-all-closed", () => {});
+
 async function main() {
+  createMainWindow();
   const userFolderPath = electronApplication.getPath("userData");
   const serverCertificate = await getServerCertificate(userFolderPath);
   const serverCertificateFingerprint = serverCertificate.getFingerprint();
@@ -87,5 +95,17 @@ function createAuthorizationRequestWindow(clientIpAddress, clientCertificateFing
       device.authorizationStatus = Device.AUTHORIZATION_STATUS.NOT_AUTHORIZED;
     }
     device.save();
+  });
+}
+
+function createMainWindow() {
+  mainWindow = new BrowserWindow({width: 800, height: 600});
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, "electron-application", "windows", "main", "index.html"),
+    protocol: "file:",
+    slashes: true
+  }));
+  mainWindow.on("closed", () => {
+    mainWindow = null;
   });
 }

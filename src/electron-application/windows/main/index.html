@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Airy Connect</title>
+    <link rel="stylesheet" href="../../../../node_modules/normalize.css/normalize.css">
+    <link rel="stylesheet" href="../../../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../../../../node_modules/material-components-web/dist/material-components-web.min.css">
+    <link rel="stylesheet" href="../../common/css/style.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<h1>Main Window</h1>
+
+<script src="../../../../node_modules/material-components-web/dist/material-components-web.min.js"></script>
+<script>
+  window.mdc.autoInit();
+  for (const $button of document.querySelectorAll(".mdc-button")) {
+    new window.mdc.ripple.MDCRipple($button);
+  }
+</script>
+<script>require("./script");</script>
+</body>
+</html>
