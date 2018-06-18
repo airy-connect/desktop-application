@@ -18,6 +18,7 @@ function deviceMiddleware(request, response, next) {
     device = new Device(fingerprint, ip);
   } else {
     device.lastIpAddress = ip;
+    device.lastSeen = Date.now();
   }
   device.save();
 

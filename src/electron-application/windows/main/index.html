@@ -7,20 +7,95 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Airy Connect</title>
     <link rel="stylesheet" href="../../../../node_modules/normalize.css/normalize.css">
-    <link rel="stylesheet" href="../../../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="../../../../node_modules/material-components-web/dist/material-components-web.min.css">
+    <link rel="stylesheet" href="../../../../node_modules/material-design-icons/iconfont/material-icons.css">
     <link rel="stylesheet" href="../../common/css/style.css">
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<h1>Main Window</h1>
-
+<div class="devices-list-empty">Нет подключенных устройств.</div>
+<div class="container" style="display: none">
+    <div class="device-list">
+        <nav class="mdc-drawer mdc-drawer--permanent mdc-typography">
+            <div class="mdc-drawer__content">
+                <nav data-devices-list class="mdc-list">
+                    <a data-devices-list-item class="mdc-list-item mdc-list-item--activated" href="#">
+                        Устройство 1
+                    </a>
+                    <a class="mdc-list-item" href="#">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">fiber_manual_record</i>
+                        Устройство 2
+                    </a>
+                    <a class="mdc-list-item" href="#">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">fiber_manual_record</i>
+                        Устройство 3
+                    </a>
+                    <a class="mdc-list-item" href="#">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">fiber_manual_record</i>
+                        Устройство 4
+                    </a>
+                    <a class="mdc-list-item" href="#">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">fiber_manual_record</i>
+                        Устройство 5
+                    </a>
+                    <a class="mdc-list-item" href="#">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">fiber_manual_record</i>
+                        Устройство 6
+                    </a>
+                    <a class="mdc-list-item" href="#">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">fiber_manual_record</i>
+                        Устройство 7
+                    </a>
+                </nav>
+            </div>
+        </nav>
+    </div>
+    <div class="select-device-message">Выберите устройство.</div>
+    <div class="settings-list" style="display: none">
+        <div class="settings-list__title">
+            <span>Информация об устройстве</span>
+        </div>
+        <div class="settings-list__item">
+            <p>IP адрес: <span data-ip-address></span></p>
+        </div>
+        <div class="settings-list__title">
+            <span>Настройки</span>
+        </div>
+        <div class="settings-list__item">
+            <span class="settings-list__item_title">Скорость курсора</span>
+            <div class="settings-list__item_slider ">
+                <div class="mdc-slider mdc-slider--discrete mdc-slider--display-markers"
+                     tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="200" aria-valuenow="100" data-step="10"
+                     aria-label="Select Value">
+                    <div class="mdc-slider__track-container">
+                        <div class="mdc-slider__track"></div>
+                        <div class="mdc-slider__track-marker-container"></div>
+                    </div>
+                    <div class="mdc-slider__thumb-container">
+                        <div class="mdc-slider__pin">
+                            <span class="mdc-slider__pin-value-marker"></span>
+                        </div>
+                        <svg class="mdc-slider__thumb" width="21" height="21">
+                            <circle cx="10.5" cy="10.5" r="7.875"></circle>
+                        </svg>
+                        <div class="mdc-slider__focus-ring"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="settings-list__item" style="justify-content: flex-end;">
+            <button class="mdc-button mdc-button--remove" data-mdc-auto-init="MDCRipple">
+                Удалить устройство
+            </button>
+        </div>
+    </div>
+</div>
+<div class="status-bar">
+    <span>IP-адрес: <span data-server-ip-address></span></span>
+</div>
 <script src="../../../../node_modules/material-components-web/dist/material-components-web.min.js"></script>
 <script>
   window.mdc.autoInit();
-  for (const $button of document.querySelectorAll(".mdc-button")) {
-    new window.mdc.ripple.MDCRipple($button);
-  }
 </script>
 <script>require("./script");</script>
 </body>

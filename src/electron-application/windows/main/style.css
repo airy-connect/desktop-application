@@ -1,0 +1,148 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0 0 16px 0;
+    box-sizing: border-box;
+}
+
+.status-bar {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    padding: 0 8px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background-color: cornflowerblue;
+    color: white;
+    font-size: 12px;
+    width: 100%;
+    height: 16px;
+    box-sizing: border-box;
+}
+
+:root {
+    --mdc-theme-primary: #78909c;
+    --mdc-theme-text-primary-on-background: #ffffff;
+}
+
+.devices-list-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.device-list {
+    height: 100%;
+}
+
+.mdc-drawer--permanent.mdc-drawer--permanent, .mdc-drawer--permanent .mdc-drawer__drawer {
+    background-color: #37474F !important;
+    height: 100%;
+}
+
+.settings-list__title {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.settings-list__title span {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.mdc-top-app-bar {
+    background-color: transparent;
+}
+
+[data-is-device-online=true] .material-icons {
+    color: #4caf50;
+}
+
+[data-is-device-online=false] .material-icons {
+    color: #ff5252;
+}
+
+.mdc-drawer--permanent {
+    border: none;
+}
+
+.mdc-drawer__content .mdc-list {
+    padding: 0;
+}
+
+.mdc-top-app-bar__row {
+    height: 48px;
+}
+
+.settings-list {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.mdc-top-app-bar {
+    position: static;
+}
+
+.settings-list__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+}
+
+.mdc-top-app-bar__section {
+    padding: 0;
+}
+
+.mdc-top-app-bar__title {
+    padding: 0;
+    padding-left: 20px;
+}
+
+.settings-list__item_slider  {
+    width: 66%;
+}
+
+.settings-list__item_title {
+    margin-right: 36px;
+}
+
+.settings-list__item {
+    padding: 0 20px;
+}
+
+.settings-list__item .mdc-button {
+    color: #ff5252;
+}
+
+.mdc-button:after, .mdc-button:before {
+    background-color: #ff5252;
+}
+
+.select-device-message {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mdc-list-item--activated {
+    background-color: #455A64 !important;
+}

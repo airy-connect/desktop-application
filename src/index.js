@@ -26,7 +26,8 @@ electronApplication.on("activate", () => {
   }
 });
 
-electronApplication.on("window-all-closed", () => {});
+electronApplication.on("window-all-closed", () => {
+});
 
 async function main() {
   createMainWindow();
@@ -100,6 +101,36 @@ function createAuthorizationRequestWindow(clientIpAddress, clientCertificateFing
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({width: 800, height: 600});
+  mainWindow["props"] = {
+    getIpAddress() {
+      return ExpressApplication.getLocalIpAddress();
+    },
+    getDevices() {
+      return Device
+        .all
+        .filter((device) => _.isEqual(device.authorizationStatus, Device.AUTHORIZATION_STATUS.AUTHORIZED))
+        .map((device) => device.toPlainObject());
+    },
+    updateDevice({
+                   certificateFingerprint,
+                   lastIpAddress,
+                   lastSeen,
+                   authorizationStatus,
+                   authorizationRequestsNumber,
+                   cursorSpeed,
+                 }) {
+      const device = Device.findByCertificateFingerprint(certificateFingerprint);
+      device.lastIpAddress = lastIpAddress;
+      device.lastSeen = lastSeen;
+      device.authorizationStatus = authorizationStatus;
+      device.authorizationRequestsNumber = authorizationRequestsNumber;
+      device.cursorSpeed = cursorSpeed;
+      device.save();
+    },
+    removeDevice(certificateFingerprint) {
+      Device.findByCertificateFingerprint(certificateFingerprint).delete();
+    }
+  };
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, "electron-application", "windows", "main", "index.html"),
     protocol: "file:",

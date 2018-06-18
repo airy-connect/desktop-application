@@ -39,8 +39,10 @@ class Device {
     return new Device(
       device["certificateFingerprint"],
       device["lastIpAddress"],
+      device["lastSeen"],
       device["authorizationStatus"],
       device["authorizationRequestsNumber"],
+      device["cursorSpeed"],
     );
   }
 
@@ -53,28 +55,36 @@ class Device {
       .map((device) => new Device(
         device["certificateFingerprint"],
         device["lastIpAddress"],
+        device["lastSeen"],
         device["authorizationStatus"],
         device["authorizationRequestsNumber"],
+        device["cursorSpeed"],
       ));
   }
 
   /**
    * @param {string} certificateFingerprint
    * @param {string} lastIpAddress
+   * @param {number} lastSeen
    * @param {Device.AUTHORIZATION_STATUS} authorizationStatus
    * @param {number} authorizationRequestsNumber
+   * @param {number} cursorSpeed
    * @constructor
    */
   constructor(
     certificateFingerprint,
     lastIpAddress,
+    lastSeen = Date.now(),
     authorizationStatus = Device.AUTHORIZATION_STATUS.NOT_AUTHORIZED,
     authorizationRequestsNumber = 0,
+    cursorSpeed = 1,
   ) {
     this._certificateFingerprint = certificateFingerprint;
     this._lastIpAddress = lastIpAddress;
+    this._lastSeen = lastSeen;
     this._authorizationStatus = authorizationStatus;
     this._authorizationRequestsNumber = authorizationRequestsNumber;
+    this._cursorSpeed = cursorSpeed;
   }
 
   /**
@@ -106,6 +116,20 @@ class Device {
   }
 
   /**
+   * @returns {number}
+   */
+  get lastSeen() {
+    return this._lastSeen;
+  }
+
+  /**
+   * @param {number} lastSeen
+   */
+  set lastSeen(lastSeen) {
+    this._lastSeen= lastSeen;
+  }
+
+  /**
    * @returns {Device.AUTHORIZATION_STATUS}
    */
   get authorizationStatus() {
@@ -134,14 +158,27 @@ class Device {
   }
 
   /**
-   *
+   * @returns {number}
    */
+  get cursorSpeed() {
+    return this._cursorSpeed;
+  }
+
+  /**
+   * @param {number} cursorSpeed
+   */
+  set cursorSpeed(cursorSpeed) {
+    this._cursorSpeed = cursorSpeed;
+  }
+
   save() {
     const {
       certificateFingerprint,
       lastIpAddress,
+      lastSeen,
       authorizationStatus,
-      authorizationRequestsNumber
+      authorizationRequestsNumber,
+      cursorSpeed,
     } = this;
 
     const isDeviceNotExists = devices
@@ -154,8 +191,10 @@ class Device {
         .push({
           certificateFingerprint,
           lastIpAddress,
+          lastSeen,
           authorizationStatus,
           authorizationRequestsNumber,
+          cursorSpeed,
         })
         .write();
     } else {
@@ -163,11 +202,40 @@ class Device {
         .find({certificateFingerprint})
         .assign({
           lastIpAddress,
+          lastSeen,
           authorizationStatus,
           authorizationRequestsNumber,
+          cursorSpeed,
         })
         .write();
     }
+  }
+
+  delete() {
+    const {certificateFingerprint} = this;
+
+    devices
+      .remove({certificateFingerprint})
+      .write();
+  }
+
+  toPlainObject() {
+    const {
+      certificateFingerprint,
+      lastIpAddress,
+      lastSeen,
+      authorizationStatus,
+      authorizationRequestsNumber,
+      cursorSpeed,
+    } = this;
+    return {
+      certificateFingerprint,
+      lastIpAddress,
+      lastSeen,
+      authorizationStatus,
+      authorizationRequestsNumber,
+      cursorSpeed,
+    };
   }
 }
 

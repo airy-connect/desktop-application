@@ -20,6 +20,7 @@
     "lodash": "^4.17.10",
     "lowdb": "^1.0.0",
     "material-components-web": "^0.36.0",
+    "material-design-icons": "^3.0.1",
     "normalize.css": "^8.0.0",
     "npm": "^6.1.0",
     "request": "^2.86.0",

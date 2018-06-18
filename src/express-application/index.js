@@ -32,7 +32,10 @@ class ExpressApplication extends EventEmitter {
       "/remoteInputPlugin/cursorMove",
       authorizationMiddleware,
       (request, response) => {
-        const {deltaX, deltaY} = request.query;
+        const {device, query} = request;
+        let {deltaX, deltaY} = query;
+        deltaX *= device.cursorSpeed;
+        deltaY *= device.cursorSpeed;
         RemoteInputPlugin.moveCursor(+deltaX, +deltaY);
         response.status(200).send();
       }
@@ -135,7 +138,7 @@ class ExpressApplication extends EventEmitter {
       authorizationMiddleware,
       async (request, response) => {
         const screenshot = await ScreenshotPlugin.get();
-        response.status(200).send(screenshot.toString('base64'));
+        response.status(200).send(screenshot.toString("base64"));
       }
     );
 
@@ -146,7 +149,7 @@ class ExpressApplication extends EventEmitter {
       requestCert: true,
       rejectUnauthorized: true,
     };
-    const ipAddress = this._getLocalIpAddress();
+    const ipAddress = ExpressApplication.getLocalIpAddress();
     const port = 8420;
     https
       .createServer(httpsServerOptions, this._expressApplication)
@@ -192,7 +195,7 @@ class ExpressApplication extends EventEmitter {
     return response.status(200).send();
   }
 
-  _getLocalIpAddress() {
+  static getLocalIpAddress() {
     const networkInterfaces = os.networkInterfaces();
     return _(networkInterfaces)
       .values()
